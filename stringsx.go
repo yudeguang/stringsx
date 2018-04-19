@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-//返回第一次出现sep之后的字符串
+//返回第一次出现sep之后的字串符
 func After(s, sep string) string {
 	if s == "" || sep == "" {
 		return s
@@ -134,7 +134,7 @@ func JoinStrings(sep string, args ...string) string {
 }
 
 //用分隔符sep把若干个字符或int,double等类型数据拼接在一起,实际为strings.Join的变体形式
-func JoinInterface(sep string, args []interface{}) string {
+func JoinInterface(sep string, args ...interface{}) string {
 	l := len(args)
 	switch l {
 	case 0:
