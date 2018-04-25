@@ -3,12 +3,8 @@ package stringsx
 
 import (
 	"bytes"
-	"code.google.com/p/mahonia"
 	"fmt"
 	iox "github.com/yudeguang/iox"
-	"golang.org/x/text/encoding/simplifiedchinese"
-	"golang.org/x/text/transform"
-	"io/ioutil"
 	"math/rand"
 	"strings"
 	"time"
@@ -273,56 +269,4 @@ func Rand(s string) string {
 		newRunes = append(newRunes, runes[randedIndex])
 	}
 	return string(newRunes)
-}
-
-//GB18030转换为UTF8，应优先使用GB18030,GB18030为GBK的超集,GBK又为GB2312的超集
-func GB18030ToUTF8(s string) string {
-	return ToUTF8(s, "GB18030")
-}
-
-//GBK转换为utf8
-func GBKToUTF8(s string) string {
-	return ToUTF8(s, "GBK")
-}
-
-//GB2312转换为utf8
-func GB2312ToUTF8(s string) string {
-	return ToUTF8(s, "GB2312")
-}
-
-//其它类型转换为UTF8
-func ToUTF8(s, name string) string {
-	var dec mahonia.Decoder
-	dec = mahonia.NewDecoder(name) //"GB18030"
-	if ret, ok := dec.ConvertStringOK(s); ok {
-		return ret
-	}
-	return s
-}
-
-//UTF8转GB18030，注意，打印出来一般是乱码
-func UTF8ToGB18030(s string) string {
-	data, err := ioutil.ReadAll(transform.NewReader(bytes.NewReader([]byte(s)), simplifiedchinese.GB18030.NewEncoder()))
-	if err != nil {
-		panic(err)
-	}
-	return string(data)
-}
-
-//UTF8转GBK，注意，打印出来一般是乱码
-func UTF8ToGBK(s string) string {
-	data, err := ioutil.ReadAll(transform.NewReader(bytes.NewReader([]byte(s)), simplifiedchinese.GBK.NewEncoder()))
-	if err != nil {
-		panic(err)
-	}
-	return string(data)
-}
-
-//UTF8转GB2312，注意，打印出来一般是乱码
-func UTF8ToGB2312(s string) string {
-	data, err := ioutil.ReadAll(transform.NewReader(bytes.NewReader([]byte(s)), simplifiedchinese.HZGB2312.NewEncoder()))
-	if err != nil {
-		panic(err)
-	}
-	return string(data)
 }
