@@ -270,3 +270,17 @@ func Rand(s string) string {
 	}
 	return string(newRunes)
 }
+
+const strs = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`
+
+//只保留数字和英文字母
+func NumbersLettersLeft(s string) string {
+	runes := []rune(s)
+	newRunes := make([]rune, 0, len(runes))
+	for _, r := range runes {
+		if strings.Contains(strs, string(r)) {
+			newRunes = append(newRunes, r)
+		}
+	}
+	return string(newRunes)
+}
