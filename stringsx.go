@@ -273,7 +273,7 @@ func Rand(s string) string {
 
 const strs = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`
 
-//只保留数字和英文字母,其它类型字母及标点符号点均删除
+//只保留数字和英文字母,删除其它类型字母及标点符号
 func NumbersLettersLeft(s string) string {
 	runes := []rune(s)
 	newRunes := make([]rune, 0, len(runes))
