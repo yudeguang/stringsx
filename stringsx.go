@@ -6,6 +6,7 @@ import (
 	"fmt"
 	iox "github.com/yudeguang/iox"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -127,6 +128,29 @@ func Right(s string, n int) string {
 //用分隔符sep把若干个字符拼接在一起,实际为strings.Join的变体形式
 func JoinStrings(sep string, args ...string) string {
 	return strings.Join(args, sep)
+}
+
+//用分隔符号把若干个数字排接在一起
+func JoinInts(sep string, args ...int) string {
+	l := len(args)
+	switch l {
+	case 0:
+		return ""
+	case 1:
+		return strconv.Itoa(args[0])
+	case 2:
+		return strconv.Itoa(args[0]) + sep + strconv.Itoa(args[1])
+	case 3:
+		return strconv.Itoa(args[0]) + sep + strconv.Itoa(args[1]) + sep + strconv.Itoa(args[2])
+	}
+	var buffer bytes.Buffer
+	//前面若干条中间要加sep
+	for i := 0; i < l-1; i++ {
+		buffer.WriteString(strconv.Itoa(args[i]) + sep)
+	}
+	//最后次不加sep
+	buffer.WriteString(strconv.Itoa(args[l-1]))
+	return buffer.String()
 }
 
 //用分隔符sep把若干个字符或int,double等类型数据拼接在一起,实际为strings.Join的变体形式
