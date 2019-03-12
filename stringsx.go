@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 )
 
 //返回第一次出现sep之后的字串符
@@ -320,4 +321,41 @@ func CommaNumbersLettersLeft(s string) string {
 		}
 	}
 	return string(newRunes)
+}
+
+//判断字符串是否是由纯数字组成
+func IsNumber(s string) bool {
+	runes := []rune(s)
+	for _, r := range runes {
+		if !unicode.IsDigit(r) {
+			return false
+		}
+	}
+	return true
+}
+
+//按固定的长度拆分字符串
+func SplitByLen(s string, sepLen int) []string {
+	x := len(s) % sepLen //余数
+	y := len(s) / sepLen
+	var ret_len int
+	if x > 0 {
+		ret_len = y + 1
+	} else {
+		ret_len = y
+	}
+	var ret = make([]string, 0, ret_len)
+	cur := 0
+	for {
+		if len(s[cur:]) >= sepLen {
+			ret = append(ret, s[cur:cur+sepLen])
+			cur = cur + sepLen
+		} else {
+			if len(s[cur:]) > 0 {
+				ret = append(ret, s[cur:])
+			}
+			break
+		}
+	}
+	return ret
 }
