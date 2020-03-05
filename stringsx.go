@@ -1,3 +1,8 @@
+// Copyright 2020 stringsx Author(https://github.com/yudeguang/stringsx). All Rights Reserved.
+//
+// This Source Code Form is subject to the terms of the MIT License.
+// If a copy of the MIT was not distributed with this file,
+// You can obtain one at https://github.com/yudeguang/stringsx.
 //字符串处理包，对标准库字符串的补充
 package stringsx
 
@@ -358,4 +363,20 @@ func SplitByLen(s string, sepLen int) []string {
 		}
 	}
 	return ret
+}
+
+//判断单个rune是否是汉字
+func RuneIsHan(r rune) bool {
+	return unicode.Is(unicode.Han, r)
+}
+
+//判断rune是否包含汉字
+func ContainsHan(s string) bool {
+	runes := []rune(s)
+	for _, r := range runes {
+		if RuneIsHan(r) {
+			return true
+		}
+	}
+	return false
 }
