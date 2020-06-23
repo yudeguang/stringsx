@@ -328,6 +328,30 @@ func CommaNumbersLettersLeft(s string) string {
 	return string(newRunes)
 }
 
+//移除字符串中的汉字
+func RemoveHan(s string) string {
+	runes := []rune(s)
+	var newRunes []rune
+	for _, r := range runes {
+		if !RuneIsHan(r) {
+			newRunes = append(newRunes, r)
+		}
+	}
+	return string(newRunes)
+}
+
+//只保留字符串中的汉字
+func HanLeft(s string) string {
+	runes := []rune(s)
+	var newRunes []rune
+	for _, r := range runes {
+		if RuneIsHan(r) {
+			newRunes = append(newRunes, r)
+		}
+	}
+	return string(newRunes)
+}
+
 //判断字符串是否是由纯数字组成
 func IsNumber(s string) bool {
 	runes := []rune(s)
