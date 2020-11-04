@@ -303,6 +303,8 @@ func Rand(s string) string {
 
 const numbersAndLetters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`
 const commaAndNumbersAndLetters = `,abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`
+const numbers = `0123456789`
+const letters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`
 
 //只保留数字和英文字母,删除其它类型字母及标点符号
 func NumbersLettersLeft(s string) string {
@@ -310,6 +312,42 @@ func NumbersLettersLeft(s string) string {
 	newRunes := make([]rune, 0, len(runes))
 	for _, r := range runes {
 		if strings.Contains(numbersAndLetters, string(r)) {
+			newRunes = append(newRunes, r)
+		}
+	}
+	return string(newRunes)
+}
+
+//只保留阿拉伯数字
+func NumbersLeft(s string) string {
+	runes := []rune(s)
+	newRunes := make([]rune, 0, len(runes))
+	for _, r := range runes {
+		if strings.Contains(numbers, string(r)) {
+			newRunes = append(newRunes, r)
+		}
+	}
+	return string(newRunes)
+}
+
+//只保留英文字母
+func LettersLeft(s string) string {
+	runes := []rune(s)
+	newRunes := make([]rune, 0, len(runes))
+	for _, r := range runes {
+		if strings.Contains(letters, string(r)) {
+			newRunes = append(newRunes, r)
+		}
+	}
+	return string(newRunes)
+}
+
+//保留输入的相关字符
+func RelevantCharactersLeft(s, RelevantCharacter string) string {
+	runes := []rune(s)
+	newRunes := make([]rune, 0, len(runes))
+	for _, r := range runes {
+		if strings.Contains(RelevantCharacter, string(r)) {
 			newRunes = append(newRunes, r)
 		}
 	}
@@ -352,17 +390,6 @@ func HanLeft(s string) string {
 	return string(newRunes)
 }
 
-//判断字符串是否是由纯数字组成
-func IsNumber(s string) bool {
-	runes := []rune(s)
-	for _, r := range runes {
-		if !unicode.IsDigit(r) {
-			return false
-		}
-	}
-	return true
-}
-
 //按固定的长度拆分字符串
 func SplitByLen(s string, sepLen int) []string {
 	x := len(s) % sepLen //余数
@@ -401,6 +428,33 @@ func ContainsHan(s string) bool {
 		if RuneIsHan(r) {
 			return true
 		}
+	}
+	return false
+}
+
+//判断字符串是否是由纯数字组成
+func IsNumber(s string) bool {
+	runes := []rune(s)
+	for _, r := range runes {
+		if !unicode.IsDigit(r) {
+			return false
+		}
+	}
+	return true
+}
+
+//判断是否是大写字母
+func IsLetterUpper(b byte) bool {
+	if b >= byte('A') && b <= byte('Z') {
+		return true
+	}
+	return false
+}
+
+//判断是否是小写字母
+func IsLetterLower(b byte) bool {
+	if b >= byte('a') && b <= byte('z') {
+		return true
 	}
 	return false
 }
