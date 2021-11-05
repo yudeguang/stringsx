@@ -7,8 +7,6 @@
 package stringsx
 
 import (
-	"bytes"
-	"fmt"
 	iox "github.com/yudeguang/iox"
 	"math/rand"
 	"strconv"
@@ -137,6 +135,7 @@ func JoinStrings(sep string, args ...string) string {
 }
 
 //用分隔符号把若干个数字排接在一起
+/*
 func JoinInts(sep string, args ...int) string {
 	l := len(args)
 	switch l {
@@ -158,8 +157,30 @@ func JoinInts(sep string, args ...int) string {
 	buffer.WriteString(strconv.Itoa(args[l-1]))
 	return buffer.String()
 }
+ */
 
+func JoinInts( sep string,elems ...int) string {
+	switch len(elems) {
+	case 0:
+		return ""
+	case 1:
+		return strconv.Itoa(elems[0])
+	}
+	n := len(sep) * (len(elems) - 1)
+	for i := 0; i < len(elems); i++ {
+		n += len( strconv.Itoa(elems[i]))
+	}
+	var b strings.Builder
+	b.Grow(n)
+	b.WriteString(strconv.Itoa(elems[0]) )
+	for _, s := range elems[1:] {
+		b.WriteString(sep)
+		b.WriteString(strconv.Itoa(s))
+	}
+	return b.String()
+}
 //用分隔符sep把若干个字符或int,double等类型数据拼接在一起,实际为strings.Join的变体形式
+/*
 func JoinInterface(sep string, args ...interface{}) string {
 	l := len(args)
 	switch l {
@@ -181,7 +202,27 @@ func JoinInterface(sep string, args ...interface{}) string {
 	buffer.WriteString(fmt.Sprint(args[l-1]))
 	return buffer.String()
 }
-
+*/
+func JoinInterface( sep string,elems  ...interface{}) string {
+	switch len(elems) {
+	case 0:
+		return ""
+	case 1:
+		return  fmt.Sprint(elems[0])
+	}
+	n := len(sep) * (len(elems) - 1)
+	for i := 0; i < len(elems); i++ {
+		n += len( fmt.Sprint(elems[i]))
+	}
+	var b strings.Builder
+	b.Grow(n)
+	b.WriteString(fmt.Sprint(elems[0]) )
+	for _, s := range elems[1:] {
+		b.WriteString(sep)
+		b.WriteString(fmt.Sprint(s))
+	}
+	return b.String()
+}
 //返回倒序字符串
 func Reverse(s string) string {
 	runes := []rune(s)
