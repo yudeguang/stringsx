@@ -351,10 +351,21 @@ const letters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`
 //只保留数字和英文字母,删除其它类型字母及标点符号
 func NumbersLettersLeft(s string) string {
 	runes := []rune(s)
+	//注意，如果本身全部是数字及字母，那么就可以减少新的内存分配
+	var findIllegalChar bool
+	for i := range runes {
+		if !strings.Contains(numbersAndLetters, string(runes[i])) {
+			findIllegalChar = true
+			break
+		}
+	}
+	if !findIllegalChar {
+		return s
+	}
 	newRunes := make([]rune, 0, len(runes))
-	for _, r := range runes {
-		if strings.Contains(numbersAndLetters, string(r)) {
-			newRunes = append(newRunes, r)
+	for i := range runes {
+		if strings.Contains(numbersAndLetters, string(runes[i])) {
+			newRunes = append(newRunes, runes[i])
 		}
 	}
 	return string(newRunes)
@@ -363,10 +374,21 @@ func NumbersLettersLeft(s string) string {
 //只保留阿拉伯数字
 func NumbersLeft(s string) string {
 	runes := []rune(s)
+	//注意，如果本身全部是数字及字母，那么就可以减少新的内存分配
+	var findIllegalChar bool
+	for i := range runes {
+		if !strings.Contains(numbers, string(runes[i])) {
+			findIllegalChar = true
+			break
+		}
+	}
+	if !findIllegalChar {
+		return s
+	}
 	newRunes := make([]rune, 0, len(runes))
-	for _, r := range runes {
-		if strings.Contains(numbers, string(r)) {
-			newRunes = append(newRunes, r)
+	for i := range runes {
+		if strings.Contains(numbers, string(runes[i])) {
+			newRunes = append(newRunes, runes[i])
 		}
 	}
 	return string(newRunes)
@@ -375,10 +397,21 @@ func NumbersLeft(s string) string {
 //只保留英文字母
 func LettersLeft(s string) string {
 	runes := []rune(s)
+	//注意，如果本身全部是数字及字母，那么就可以减少新的内存分配
+	var findIllegalChar bool
+	for i := range runes {
+		if !strings.Contains(letters, string(runes[i])) {
+			findIllegalChar = true
+			break
+		}
+	}
+	if !findIllegalChar {
+		return s
+	}
 	newRunes := make([]rune, 0, len(runes))
-	for _, r := range runes {
-		if strings.Contains(letters, string(r)) {
-			newRunes = append(newRunes, r)
+	for i := range runes {
+		if strings.Contains(letters, string(runes[i])) {
+			newRunes = append(newRunes, runes[i])
 		}
 	}
 	return string(newRunes)
