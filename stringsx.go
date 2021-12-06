@@ -7,13 +7,13 @@
 package stringsx
 
 import (
+	"fmt"
 	iox "github.com/yudeguang/iox"
 	"math/rand"
 	"strconv"
 	"strings"
 	"time"
 	"unicode"
-	"fmt"
 )
 
 //返回第一次出现sep之后的字串符
@@ -158,9 +158,9 @@ func JoinInts(sep string, args ...int) string {
 	buffer.WriteString(strconv.Itoa(args[l-1]))
 	return buffer.String()
 }
- */
+*/
 
-func JoinInts( sep string,elems ...int) string {
+func JoinInts(sep string, elems ...int) string {
 	switch len(elems) {
 	case 0:
 		return ""
@@ -169,17 +169,18 @@ func JoinInts( sep string,elems ...int) string {
 	}
 	n := len(sep) * (len(elems) - 1)
 	for i := 0; i < len(elems); i++ {
-		n += len( strconv.Itoa(elems[i]))
+		n += len(strconv.Itoa(elems[i]))
 	}
 	var b strings.Builder
 	b.Grow(n)
-	b.WriteString(strconv.Itoa(elems[0]) )
+	b.WriteString(strconv.Itoa(elems[0]))
 	for _, s := range elems[1:] {
 		b.WriteString(sep)
 		b.WriteString(strconv.Itoa(s))
 	}
 	return b.String()
 }
+
 //用分隔符sep把若干个字符或int,double等类型数据拼接在一起,实际为strings.Join的变体形式
 /*
 func JoinInterface(sep string, args ...interface{}) string {
@@ -204,26 +205,27 @@ func JoinInterface(sep string, args ...interface{}) string {
 	return buffer.String()
 }
 */
-func JoinInterface( sep string,elems  ...interface{}) string {
+func JoinInterface(sep string, elems ...interface{}) string {
 	switch len(elems) {
 	case 0:
 		return ""
 	case 1:
-		return  fmt.Sprint(elems[0])
+		return fmt.Sprint(elems[0])
 	}
 	n := len(sep) * (len(elems) - 1)
 	for i := 0; i < len(elems); i++ {
-		n += len( fmt.Sprint(elems[i]))
+		n += len(fmt.Sprint(elems[i]))
 	}
 	var b strings.Builder
 	b.Grow(n)
-	b.WriteString(fmt.Sprint(elems[0]) )
+	b.WriteString(fmt.Sprint(elems[0]))
 	for _, s := range elems[1:] {
 		b.WriteString(sep)
 		b.WriteString(fmt.Sprint(s))
 	}
 	return b.String()
 }
+
 //返回倒序字符串
 func Reverse(s string) string {
 	runes := []rune(s)
@@ -343,10 +345,7 @@ func Rand(s string) string {
 	return string(newRunes)
 }
 
-const numbersAndLetters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`
 const commaAndNumbersAndLetters = `,abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`
-const numbers = `0123456789`
-const letters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`
 
 //只保留数字和英文字母,删除其它类型字母及标点符号
 func NumbersLettersLeft(s string) string {
@@ -354,7 +353,7 @@ func NumbersLettersLeft(s string) string {
 	//注意，如果本身全部是数字及字母，那么就可以减少新的内存分配
 	var findIllegalChar bool
 	for i := range runes {
-		if !strings.Contains(numbersAndLetters, string(runes[i])) {
+		if !((runes[i] >= 'a' && runes[i] <= 'z') || (runes[i] >= 'A' && runes[i] <= 'Z') || (runes[i] >= '0' && runes[i] <= '9')) {
 			findIllegalChar = true
 			break
 		}
@@ -364,7 +363,7 @@ func NumbersLettersLeft(s string) string {
 	}
 	newRunes := make([]rune, 0, len(runes))
 	for i := range runes {
-		if strings.Contains(numbersAndLetters, string(runes[i])) {
+		if (runes[i] >= 'a' && runes[i] <= 'z') || (runes[i] >= 'A' && runes[i] <= 'Z') || (runes[i] >= '0' && runes[i] <= '9') {
 			newRunes = append(newRunes, runes[i])
 		}
 	}
@@ -377,7 +376,7 @@ func NumbersLeft(s string) string {
 	//注意，如果本身全部是数字及字母，那么就可以减少新的内存分配
 	var findIllegalChar bool
 	for i := range runes {
-		if !strings.Contains(numbers, string(runes[i])) {
+		if !(runes[i] >= '0' && runes[i] <= '9') {
 			findIllegalChar = true
 			break
 		}
@@ -387,7 +386,7 @@ func NumbersLeft(s string) string {
 	}
 	newRunes := make([]rune, 0, len(runes))
 	for i := range runes {
-		if strings.Contains(numbers, string(runes[i])) {
+		if runes[i] >= '0' && runes[i] <= '9' {
 			newRunes = append(newRunes, runes[i])
 		}
 	}
@@ -400,7 +399,7 @@ func LettersLeft(s string) string {
 	//注意，如果本身全部是数字及字母，那么就可以减少新的内存分配
 	var findIllegalChar bool
 	for i := range runes {
-		if !strings.Contains(letters, string(runes[i])) {
+		if !((runes[i] >= 'a' && runes[i] <= 'z') || (runes[i] >= 'A' && runes[i] <= 'Z')) {
 			findIllegalChar = true
 			break
 		}
@@ -410,7 +409,7 @@ func LettersLeft(s string) string {
 	}
 	newRunes := make([]rune, 0, len(runes))
 	for i := range runes {
-		if strings.Contains(letters, string(runes[i])) {
+		if (runes[i] >= 'a' && runes[i] <= 'z') || (runes[i] >= 'A' && runes[i] <= 'Z') {
 			newRunes = append(newRunes, runes[i])
 		}
 	}
