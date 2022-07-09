@@ -536,9 +536,18 @@ func IsLetterLower(b byte) bool {
 //HTML中，经常有换行符号，前后有空格等
 func FmtHTML(s string) string {
 	for {
-		if !strings.Contains(s,"\r\n"){
+		if strings.Contains(s,"\r\n"){
 			s=strings.Replace(s,"\r\n","",-1)
 			s=strings.TrimSpace(s)
+		}else{
+			break
+		}
+	}
+	for {
+		if strings.Contains(s,"\n"){
+			s=strings.Replace(s,"\n","",-1)
+			s=strings.TrimSpace(s)
+		}else{
 			break
 		}
 	}
