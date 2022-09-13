@@ -45,7 +45,7 @@ func AfterNSep(s, sep string, nTimes int) string {
 	if sep == "" || s == "" || nTimes <= 0 {
 		return s
 	}
-	f := iox.New(strings.NewReader(s))
+	f := iox.NewReadSeeker(strings.NewReader(s))
 	pos := int(f.IndexN(0, []byte(sep), nTimes))
 	if pos == -1 {
 		return ""
@@ -82,7 +82,7 @@ func BeforeNSep(s, sep string, nTimes int) string {
 	if sep == "" || s == "" || nTimes <= 0 {
 		return s
 	}
-	f := iox.New(strings.NewReader(s))
+	f := iox.NewReadSeeker(strings.NewReader(s))
 	pos := int(f.IndexN(0, []byte(sep), nTimes))
 	if pos == -1 {
 		return ""
@@ -97,7 +97,7 @@ func Between(s, begin, end string) string {
 	}
 	beginPos := strings.Index(s, begin)
 	if beginPos != -1 {
-		f := iox.New(strings.NewReader(s))
+		f := iox.NewReadSeeker(strings.NewReader(s))
 		endPos := int(f.IndexGen(int64(beginPos+len(begin)), int64(len(s)-1), []byte(end)))
 		if endPos != -1 {
 			return s[beginPos+len(begin) : endPos]
@@ -517,6 +517,17 @@ func IsNumber(s string) bool {
 	return true
 }
 
+//判断字符串是否是由纯字母组成
+func IsLetter(s string) bool {
+	runes := []rune(s)
+	for _, r := range runes {
+		if !unicode.IsLetter(r) {
+			return false
+		}
+	}
+	return true
+}
+
 //判断是否是大写字母
 func IsLetterUpper(b byte) bool {
 	if b >= byte('A') && b <= byte('Z') {
@@ -536,18 +547,9 @@ func IsLetterLower(b byte) bool {
 //HTML中，经常有换行符号，前后有空格等
 func FmtHTML(s string) string {
 	for {
-		if strings.Contains(s,"\r\n"){
-			s=strings.Replace(s,"\r\n","",-1)
-			s=strings.TrimSpace(s)
-		}else{
-			break
-		}
-	}
-	for {
-		if strings.Contains(s,"\n"){
-			s=strings.Replace(s,"\n","",-1)
-			s=strings.TrimSpace(s)
-		}else{
+		if !strings.Contains(s, "\r\n") {
+			s = strings.Replace(s, "\r\n", "", -1)
+			s = strings.TrimSpace(s)
 			break
 		}
 	}
