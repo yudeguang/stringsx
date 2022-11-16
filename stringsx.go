@@ -559,17 +559,25 @@ func FmtHTML(s string) string {
 // 返回最相似的一个字符串
 func MostSimilar(a string, b []string) string {
 	var okID int
-	var okKey string
+	var same string
 	find := false
 	for i := range b {
 		if a == b[i] {
 			return a
 		}
-		temp := sameStringWithoutSpace(a, b[i])
-		if len(temp) > len(okKey) {
+		//找出相同的
+		tempSame := sameStringWithoutSpace(a, b[i])
+		if len(tempSame) > len(same) {
 			okID = i
-			okKey = temp
+			same = tempSame
 			find = true
+		}else if len(tempSame)==len(same){
+			//如果相同的，那么取目标数据短的那一条
+			if len(strings.Replace(b[okID]," ","",-1 ) )>len(strings.Replace(b[i]," ","",-1)){
+				okID = i
+				same = tempSame
+				find = true
+			}
 		}
 	}
 	if find {
@@ -596,6 +604,7 @@ func sameStringWithoutSpace(a, b string) string {
 			if ra[i] == rb[ii] {
 				result = append(result, ra[i])
 				rb[ii] = space
+				ra[i]=space
 			}
 		}
 	}
