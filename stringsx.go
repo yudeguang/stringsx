@@ -14,6 +14,8 @@ import (
 	"strings"
 	"time"
 	"unicode"
+	"github.com/antlabs/strsim"
+	"github.com/antlabs/strsim/similarity"
 )
 
 //返回第一次出现sep之后的字串符
@@ -556,7 +558,7 @@ func FmtHTML(s string) string {
 	return strings.TrimSpace(s)
 }
 
-// 返回最相似的一个字符串
+//返回最相似的一个字符串，前缀匹配优先 用于特定的项目
 func MostSimilar(a string, b []string) string {
 	var okID int
 	var same string
@@ -642,4 +644,8 @@ func sameStringWithoutSpace(a, b string) string {
 		}
 	}
 	return string(result)
+}
+//返回相似度最高的那个字符串 并且带匹配度 此为通用算法
+func MostSimilarWithScore(a  string,b []string)*similarity.Match{
+	return strsim.FindBestMatchOne(a,b)
 }
