@@ -565,8 +565,8 @@ func MostSimilar(a string, b []string) string {
 		if a == b[i] {
 			return a
 		}
-		//找出相同的
-		tempSame := sameStringWithoutSpace(a, b[i])
+		//找出相同的 有相同前缀的，权重要增加
+		tempSame := sameStringWithoutSpace(a, b[i])+samePrefix(a,b[i])
 		if len(tempSame) > len(same) {
 			okID = i
 			same = tempSame
@@ -585,7 +585,40 @@ func MostSimilar(a string, b []string) string {
 	}
 	return ""
 }
+//去除空格括号等相同的前缀字符
+func samePrefix(a, b string) string{
+	//先去除特殊字符
+	stopWords:=" ()（）"
+	for _,v:=range SplitByLen(stopWords,1){
+		a=strings.Replace(a,v,"",-1)
+		b=strings.Replace(b,v,"",-1)
+	}
+	if len(a) == 0 || len(b) == 0 {
+		return ""
+	}
+	var result []rune
+	ra := []rune(a)
+	rb := []rune(b)
+	maxi:=minInt(len(ra),len(rb))
 
+	for i:=0;i<maxi;i++{
+		if ra[i]!=rb[i]{
+			break
+		}
+		result=append(result,ra[i])
+	}
+	return string(result)
+}
+
+func minInt(args ...int) int {
+	min := args[0]
+	for i := 1; i < len(args); i++ {
+		if args[i] < min {
+			min = args[i]
+		}
+	}
+	return min
+}
 // 去除空格后剩余相同的字符串
 var space = []rune(" ")[0]
 
