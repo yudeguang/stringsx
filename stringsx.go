@@ -555,3 +555,49 @@ func FmtHTML(s string) string {
 	}
 	return strings.TrimSpace(s)
 }
+
+// 返回最相似的一个字符串
+func MostSimilar(a string, b []string) string {
+	var okID int
+	var okKey string
+	find := false
+	for i := range b {
+		if a == b[i] {
+			return a
+		}
+		temp := sameStringWithoutSpace(a, b[i])
+		if len(temp) > len(okKey) {
+			okID = i
+			okKey = temp
+			find = true
+		}
+	}
+	if find {
+		return b[okID]
+	}
+	return ""
+}
+
+// 去除空格后剩余相同的字符串
+var space = []rune(" ")[0]
+
+func sameStringWithoutSpace(a, b string) string {
+	ra := []rune(a)
+	rb := []rune(b)
+	if len(ra) == 0 || len(rb) == 0 {
+		return ""
+	}
+	var result []rune
+	for i := range ra {
+		if ra[i] == space {
+			continue
+		}
+		for ii := range rb {
+			if ra[i] == rb[ii] {
+				result = append(result, ra[i])
+				rb[ii] = space
+			}
+		}
+	}
+	return string(result)
+}
