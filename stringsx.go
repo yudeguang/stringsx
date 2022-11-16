@@ -566,7 +566,7 @@ func MostSimilar(a string, b []string) string {
 			return a
 		}
 		//找出相同的 有相同前缀的，权重要增加
-		tempSame := sameStringWithoutSpace(a, b[i])+samePrefix(a,b[i])
+		tempSame := sameStringWithoutSpace(a, b[i])+samePrefix(a,b[i])+samePrefix(a,b[i])
 		if len(tempSame) > len(same) {
 			okID = i
 			same = tempSame
