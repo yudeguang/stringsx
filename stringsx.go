@@ -598,7 +598,7 @@ func MostSimilars(a string, b []string) []string {
 		}
 		t:=MostSimilar(a,b)
 		result=append(result,t)
-		b=deleteByElementString(b,t)
+		b=deleteByElementString(b,t,1)
 	}
 	return result
 }
