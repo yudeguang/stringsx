@@ -587,6 +587,66 @@ func MostSimilar(a string, b []string) string {
 	}
 	return ""
 }
+
+//返回经过筛选后的若干条数据，按近似程度从高到低排序
+func MostSimilars(a string, b []string) []string {
+	var result []string
+	len_b:=len(b)
+	for{
+		if len(result)==len_b{
+			break
+		}
+		t:=MostSimilar(a,b)
+		result=append(result,t)
+		b=deleteByElementString(b,t)
+	}
+	return result
+}
+
+//返回将s中删除前n个元素e后的切片，如果num不填，或者num<0会删除所有子元素e
+func deleteByElementString(s []string, element string, num ...int) []string {
+	n := fmtNum(num...)
+	if len(s) == 0 || n == 0 {
+		return copyString(s)
+	}
+	//全部删除
+	if n < 0 {
+		ret := make([]string, 0, len(s))
+		for i := range s {
+			if s[i] != element {
+				ret = append(ret, s[i])
+			}
+		}
+		return ret
+	}
+	//删除n次
+	ret := []string{}
+	t := 0
+	for i := range s {
+		if s[i] != element {
+			ret = append(ret, s[i])
+		} else {
+			t++
+			if t == n {
+				ret = append(ret, s[i+1:]...)
+				break
+			}
+		}
+	}
+	return ret
+}
+//算出需删除的次数
+func fmtNum(num ...int) int {
+	if len(num) >= 1 {
+		return num[0]
+	}
+	return -1
+}
+//安全的复制切片
+func copyString(s []string) []string {
+	return append(s[:0:0], s...)
+}
+
 //去除空格括号等相同的前缀字符
 func samePrefix(a, b string) string{
 	//先去除特殊字符
