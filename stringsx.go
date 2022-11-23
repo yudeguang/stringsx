@@ -558,8 +558,11 @@ func FmtHTML(s string) string {
 	return strings.TrimSpace(s)
 }
 
-//返回最相似的一个字符串，前缀匹配优先 用于特定的项目
+//返回最相似的一个字符串，前缀匹配优先 用于特定的项目 如果一点相似度都没有，则返回空
 func MostSimilar(a string, b []string) string {
+	if len(b)==0{
+		return ""
+	}
 	var okID int
 	var same string
 	find := false
@@ -585,66 +588,34 @@ func MostSimilar(a string, b []string) string {
 	if find {
 		return b[okID]
 	}
+	//没有一个交集，则返回空
 	return ""
 }
-
 //返回经过筛选后的若干条数据，按近似程度从高到低排序
 func MostSimilars(a string, b []string) []string {
 	var result []string
-	len_b:=len(b)
+	lenOfb:=len(b)
 	for{
-		if len(result)==len_b{
+		if len(b)==0||len(result)==lenOfb{
 			break
 		}
 		t:=MostSimilar(a,b)
 		result=append(result,t)
-		b=deleteByElementString(b,t,1)
+		var nb []string
+		for i:=range b{
+			if b[i]!=t{
+				nb=append(nb,b[i])
+			}
+		}
+		b=nb
+	}
+	var final []string
+	for i:=range result{
+		if result[i]!=""{
+			final=append(final,result[i])
+		}
 	}
 	return result
-}
-
-//返回将s中删除前n个元素e后的切片，如果num不填，或者num<0会删除所有子元素e
-func deleteByElementString(s []string, element string, num ...int) []string {
-	n := fmtNum(num...)
-	if len(s) == 0 || n == 0 {
-		return copyString(s)
-	}
-	//全部删除
-	if n < 0 {
-		ret := make([]string, 0, len(s))
-		for i := range s {
-			if s[i] != element {
-				ret = append(ret, s[i])
-			}
-		}
-		return ret
-	}
-	//删除n次
-	ret := []string{}
-	t := 0
-	for i := range s {
-		if s[i] != element {
-			ret = append(ret, s[i])
-		} else {
-			t++
-			if t == n {
-				ret = append(ret, s[i+1:]...)
-				break
-			}
-		}
-	}
-	return ret
-}
-//算出需删除的次数
-func fmtNum(num ...int) int {
-	if len(num) >= 1 {
-		return num[0]
-	}
-	return -1
-}
-//安全的复制切片
-func copyString(s []string) []string {
-	return append(s[:0:0], s...)
 }
 
 //去除空格括号等相同的前缀字符
